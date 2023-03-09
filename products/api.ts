@@ -5,7 +5,7 @@ import Papa from 'papaparse';
 export default {
   list: (): Promise<Product[]> => {
     return axios
-      .get('https://docs.google.com/spreadsheets/d/e/2PACX-1vSX2iMhFOugeKDZsRTz_a-SQxkcbuso6idmURO5oIE6NeYngzJN969zmX_KoxN_ObVUV5bpYRmR2luE/pub?output=csv',
+      .get(`${process.env.API_URL}`,
         {
           responseType: 'blob'
         }
