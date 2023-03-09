@@ -70,6 +70,7 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
                 maxHeight={128}
                 objectFit="cover"
                 src={product.image}
+                loading='lazy'
                 onClick={()=>setSelectedImage(product.image)}
               />
               <Stack spacing={1}>
@@ -90,22 +91,31 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
           ))}
         </Grid>
         {Boolean(cart.length) && (
-          <Flex
-            alignItems="center"
-            bottom={4}
-            justifyContent="center"
-            position="sticky"
-          >
-            <Button
-              isExternal
-              as={Link}
-              colorScheme="whatsapp"
-              width="fit-content"
-              href={`https://wa.me/43214123?text=${encodeURIComponent(text)}`}
-            >
-              Completar pedido ({cart.length} productos)
-            </Button>
-          </Flex>
+          <AnimatePresence>
+            <Flex
+              alignItems="center"
+              bottom={4}
+              justifyContent="center"
+              position="sticky"
+              as={motion.div}
+              initial={{scale: 0}}
+              animate={{scale: 1}}
+              exit={{scale: 0}}
+              >
+              <Button
+                isExternal
+                as={Link}
+                colorScheme="whatsapp"
+                width="fit-content"
+                href={`https://wa.me/0492345?text=${encodeURIComponent(text)}`}
+                leftIcon={
+                  <Image src="https://icongr.am/fontawesome/whatsapp.svg?size=32&color=ffffff" alt=''/>
+                }
+                >
+                Completar pedido ({cart.length} productos)
+              </Button>
+            </Flex>
+          </AnimatePresence>
         )}
       </Stack>
       <AnimatePresence>
