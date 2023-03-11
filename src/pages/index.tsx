@@ -3,16 +3,16 @@ import { GetStaticProps } from "next";
 import { Product } from "../../products/types";
 import api from "../../products/api";
 import {
-  Button,
   Flex,
   Grid,
-  Image,
   Img,
-  Link,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";
+import NavCategories from "../../components/NavCategories";
+import Header from "../../components/Header";
+import ItemProduct from "../../components/ItemProduct";
+import SendButton from "../../components/SendButton";
 
 interface Props {
   products: Product[];
@@ -26,6 +26,7 @@ const parseCurrency = (value: number): string => {
 };
 const IndexRoute: React.FC<Props> = ({ products }) => {
   const [cart, setCart] = React.useState<Product[]>([]);
+  const [totalCart, setTotalCart] = React.useState<number>(0);
   const [selectedImage, setSelectedImage] = React.useState<string>('');
   const text = React.useMemo(() => {
     return cart
@@ -48,73 +49,30 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
   };
   return (
     <Stack>
+      <Header />
+      <NavCategories />
       <Stack spacing={6}>
         <Grid
           gridGap={6}
-          templateColumns="repeat(auto-fill, minmax(240px, 1fr))"
+          // templateColumns="repeat(auto-fill, minmax(240px, 1fr))"
+          templateColumns='1fr'
+          backgroundColor="white"
+          borderTopRadius="20px"
+
         >
           {products.map((product) => (
-            <Stack
+            <ItemProduct 
               key={product.id}
-              spacing={3}
-              padding={4}
-              borderRadius="md"
-              backgroundColor="gray.100"
-            >
-              <Image
-                as={motion.img}
-                cursor="pointer"
-                layoutId={product.image}
-                alt={product.title}
-                borderTopRadius="md"
-                maxHeight={128}
-                objectFit="cover"
-                src={product.image}
-                loading='lazy'
-                onClick={()=>setSelectedImage(product.image)}
-              />
-              <Stack spacing={1}>
-                <Text>{product.title}</Text>
-                <Text fontSize="sm" fontWeight={500} color="green.500">
-                  {parseCurrency(product.price)}
-                </Text>
-              </Stack>
-              <Button
-                colorScheme="primary"
-                size="sm"
-                variant="outline"
-                onClick={() => handleAddToCart(product)}
-              >
-                Agregar
-              </Button>
-            </Stack>
+              product={product} 
+              handleAddToCart={handleAddToCart} 
+              setSelectedImage={setSelectedImage} 
+              parseCurrency={parseCurrency}
+            />
           ))}
         </Grid>
         {Boolean(cart.length) && (
           <AnimatePresence>
-            <Flex
-              alignItems="center"
-              bottom={4}
-              justifyContent="center"
-              position="sticky"
-              as={motion.div}
-              initial={{scale: 0}}
-              animate={{scale: 1}}
-              exit={{scale: 0}}
-              >
-              <Button
-                isExternal
-                as={Link}
-                colorScheme="whatsapp"
-                width="fit-content"
-                href={`https://wa.me/0492345?text=${encodeURIComponent(text)}`}
-                leftIcon={
-                  <Image src="https://icongr.am/fontawesome/whatsapp.svg?size=32&color=ffffff" alt=''/>
-                }
-                >
-                Completar pedido ({cart.length} productos)
-              </Button>
-            </Flex>
+            <SendButton cart={cart} text={text} parseCurrency={parseCurrency} />
           </AnimatePresence>
         )}
       </Stack>
