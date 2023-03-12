@@ -10,13 +10,14 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react'
+import { Product } from '../products/typesProduct'
 
 type ModalProps = {
-  title: string
-  content: string
+  title: Product['title']
+  description: Product['description']
 }
 
-function ProductModal({title, content}:ModalProps) {
+function ProductModal({title, description}:ModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
@@ -28,7 +29,7 @@ function ProductModal({title, content}:ModalProps) {
           <ModalHeader>{title}</ModalHeader>  
           <ModalCloseButton />
           <ModalBody>
-            <Text>{content}</Text>
+            <Text>{description}</Text>
           </ModalBody>
 
           <ModalFooter>
