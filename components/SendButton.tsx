@@ -1,6 +1,6 @@
 import { Flex, Button, Image, Link, } from "@chakra-ui/react"
 import { motion } from "framer-motion"
-import { Product } from "../products/types"
+import { Product } from "../products/typesProduct"
 
 type SendbuttonProps = {
   cart: any
