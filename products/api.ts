@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Product } from "./types";
+import { Product } from "./typesProduct";
 import Papa from 'papaparse';
 
 export default {
