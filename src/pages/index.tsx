@@ -1,6 +1,7 @@
 import React from "react";
 import { GetStaticProps } from "next";
-import { Product } from "../../products/types";
+import { Product } from "../../products/typesProduct";
+import { Category } from "../../products/typesCategory";
 import api from "../../products/api";
 import {
   Flex,
@@ -13,10 +14,14 @@ import NavCategories from "../../components/NavCategories";
 import Header from "../../components/Header";
 import ItemProduct from "../../components/ItemProduct";
 import SendButton from "../../components/SendButton";
+import ItemCategory from "../../components/ItemCategory";
+import { CATEGORIES } from "../../products/CATEGORIES";
+
 
 interface Props {
   products: Product[];
 }
+
 
 const parseCurrency = (value: number): string => {
   return value.toLocaleString("es-UY", {
@@ -26,8 +31,9 @@ const parseCurrency = (value: number): string => {
 };
 const IndexRoute: React.FC<Props> = ({ products }) => {
   const [cart, setCart] = React.useState<Product[]>([]);
-  const [totalCart, setTotalCart] = React.useState<number>(0);
   const [selectedImage, setSelectedImage] = React.useState<string>('');
+  const [categorySelected, setCategorySelected] = React.useState<Category['title']>(CATEGORIES[0].title)
+  const [productsSelected, setProductsSelected] = React.useState<Product[]>(products)
   const text = React.useMemo(() => {
     return cart
       .reduce(
@@ -44,13 +50,38 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
       );
   }, [cart]);
 
+  const changeProduct = (category: Category['title']) => {
+    if (category === 'All') {
+      setProductsSelected(products)
+    } else {
+      const newArr: Product[] = []
+      products.map((p) => {
+        if (p.category === category) {
+          newArr.push(p)
+        }
+      })
+      setProductsSelected(newArr)
+    }
+  }
+
   const handleAddToCart = (product: Product) => {
     setCart((cart) => cart.concat(product));
   };
   return (
     <Stack>
       <Header />
-      <NavCategories />
+      <NavCategories
+        CATEGORIES={CATEGORIES}
+        render={(cat: any) => (
+          <ItemCategory
+            key={cat.title}
+            changeProduct={() => changeProduct(cat.title)}
+            title={cat.title}
+            image={cat.image}
+
+          />
+        )}
+      />
       <Stack spacing={6}>
         <Grid
           gridGap={6}
@@ -60,13 +91,13 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
           borderTopRadius="20px"
 
         >
-          {products.map((product) => (
-            <ItemProduct 
+          {productsSelected.map((product) => (
+            <ItemProduct
               key={product.id}
-              product={product} 
-              handleAddToCart={handleAddToCart} 
-              setSelectedImage={setSelectedImage} 
-              parseCurrency={parseCurrency}
+              product={product}
+              handleAddToCart={handleAddToCart}
+              setSelectedImage={setSelectedImage}
+              parseCurrency={parseCurrency(product.price)}
             />
           ))}
         </Grid>
@@ -90,13 +121,13 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
             left={0}
             height='100%'
             width='100%'
-            onClick={()=>setSelectedImage('')}
+            onClick={() => setSelectedImage('')}
           >
             <Img key="image" src={selectedImage}></Img>
           </Flex>
         )}
       </AnimatePresence>
-     </Stack>
+    </Stack>
   );
 };
 
