@@ -1,13 +1,13 @@
 import { HStack, Box, Image, VStack, Text, Button, } from "@chakra-ui/react"
 import { motion } from "framer-motion"
-import { Product } from "../products/types"
+import { Product } from "../products/typesProduct"
 import ProductModal from "./ProductModal"
 
 type ItemsProps = {
   product: Product
   handleAddToCart: any
   setSelectedImage: any
-  parseCurrency: any
+  parseCurrency: string
 }
 
 function ItemProduct({ product, handleAddToCart, setSelectedImage, parseCurrency }: ItemsProps) {
@@ -36,9 +36,9 @@ function ItemProduct({ product, handleAddToCart, setSelectedImage, parseCurrency
       <VStack spacing={1} align='start'>
         <Text fontWeight='bold'>{product.title}</Text>
         <Text fontSize="sm" fontWeight={500} color="green.500">
-          {parseCurrency(product.price)}
+          {parseCurrency}
         </Text>
-        <ProductModal title={product.title} content={product.description} />
+        <ProductModal title={product.title} description={product.description} />
       </VStack>
       <Button
         colorScheme="primary"
