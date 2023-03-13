@@ -19,7 +19,7 @@ const ItemProduct: React.FC<Props> = ({ product, handleAddToCart, setSelectedIma
       borderRadius="md"
       justify="space-between"
     >
-      <Box w='120px' h='120px'>
+      <Box w={[ '50px', '80px', '120px', '160px']} h={[ '50px', '80px', '120px', '160px']}>
         <Image
           w='100%'
           as={motion.img}
@@ -34,9 +34,9 @@ const ItemProduct: React.FC<Props> = ({ product, handleAddToCart, setSelectedIma
           onClick={() => setSelectedImage(product.image)}
         />
       </Box>
-      <VStack spacing={1} align='start'>
+      <VStack spacing={1} align='start' fontSize={[ 'xs', 'sm', 'md', 'xl']}>
         <Text fontWeight='bold'>{product.title}</Text>
-        <Text fontSize="sm" fontWeight={500} color="green.500">
+        <Text fontWeight={500} color="green.500">
           {parseCurrency}
         </Text>
         <ProductModal title={product.title} description={product.description} />
@@ -47,7 +47,7 @@ const ItemProduct: React.FC<Props> = ({ product, handleAddToCart, setSelectedIma
         variant="outline"
         onClick={() => handleAddToCart(product)}
       >
-        Add to cart
+        Add
       </Button>
     </HStack>
   )

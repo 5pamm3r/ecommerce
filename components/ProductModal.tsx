@@ -8,7 +8,8 @@ import {
   ModalCloseButton,
   Button,
   Text,
-  useDisclosure
+  useDisclosure,
+  Box
 } from '@chakra-ui/react'
 import React from 'react'
 import { Product } from '../products/typesProduct'
@@ -24,9 +25,9 @@ const ProductModal: React.FC<Props> = ({title, description}) => {
     <>
       <Button variant='link' size='sm' onClick={onOpen}>Details</Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent marginLeft='10px' marginRight='10px'>
           <ModalHeader>{title}</ModalHeader>  
           <ModalCloseButton />
           <ModalBody>
