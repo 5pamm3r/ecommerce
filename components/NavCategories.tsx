@@ -2,12 +2,12 @@ import { HStack} from '@chakra-ui/react';
 import React from 'react';
 import { Category } from '../products/typesCategory';
 
-type NavCategoryProps = {
+interface Props {
   CATEGORIES: Category[];
-  render: any;
+  render: (value: Category, index: number, array: Category[]) => React.ReactNode;
 }
 
-function NavCategories({ CATEGORIES, render }:NavCategoryProps ){
+const NavCategories: React.FC<Props> = ({ CATEGORIES, render }) => {
   return (
     <HStack mt={6} overflowY={'scroll'} whiteSpace={'nowrap'} spacing={4} justify='space-between'>
       { CATEGORIES.map(render) }

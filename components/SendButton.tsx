@@ -1,14 +1,15 @@
 import { Flex, Button, Image, Link, } from "@chakra-ui/react"
 import { motion } from "framer-motion"
+import React from "react"
 import { Product } from "../products/typesProduct"
 
-type SendbuttonProps = {
-  cart: any
-  text: string
-  parseCurrency: any
+interface Props {
+  cart: Product[]
+  text: string;
+  parseCurrency: string;
 }
 
-function SendButton({ cart, text, parseCurrency }: SendbuttonProps) {
+const SendButton: React.FC<Props> = ({ cart, text, parseCurrency }) => {
   return (
     <Flex
       alignItems="center"
@@ -30,7 +31,7 @@ function SendButton({ cart, text, parseCurrency }: SendbuttonProps) {
           <Image src="https://icongr.am/fontawesome/whatsapp.svg?size=32&color=ffffff" alt='' />
         }
       >
-        {cart.length} items ({parseCurrency(cart.reduce((total: number, product: Product) => total + product.price, 0))})
+        {cart.length} items ({parseCurrency})
       </Button>
     </Flex>
   )

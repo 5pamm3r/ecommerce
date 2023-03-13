@@ -3,12 +3,7 @@ import { GetStaticProps } from "next";
 import { Product } from "../../products/typesProduct";
 import { Category } from "../../products/typesCategory";
 import api from "../../products/api";
-import {
-  Flex,
-  Grid,
-  Img,
-  Stack,
-} from "@chakra-ui/react";
+import { Flex, Img, Stack } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import NavCategories from "../../components/NavCategories";
 import Header from "../../components/Header";
@@ -16,12 +11,11 @@ import ItemProduct from "../../components/ItemProduct";
 import SendButton from "../../components/SendButton";
 import ItemCategory from "../../components/ItemCategory";
 import { CATEGORIES } from "../../products/CATEGORIES";
-
+import ListProduct from "../../components/ListProduct";
 
 interface Props {
   products: Product[];
 }
-
 
 const parseCurrency = (value: number): string => {
   return value.toLocaleString("es-UY", {
@@ -31,9 +25,10 @@ const parseCurrency = (value: number): string => {
 };
 const IndexRoute: React.FC<Props> = ({ products }) => {
   const [cart, setCart] = React.useState<Product[]>([]);
-  const [selectedImage, setSelectedImage] = React.useState<string>('');
-  const [categorySelected, setCategorySelected] = React.useState<Category['title']>(CATEGORIES[0].title)
-  const [productsSelected, setProductsSelected] = React.useState<Product[]>(products)
+  const [selectedImage, setSelectedImage] =
+    React.useState<Product["image"]>("");
+  const [productsSelected, setProductsSelected] =
+    React.useState<Product[]>(products);
   const text = React.useMemo(() => {
     return cart
       .reduce(
@@ -50,19 +45,19 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
       );
   }, [cart]);
 
-  const changeProduct = (category: Category['title']) => {
-    if (category === 'All') {
-      setProductsSelected(products)
+  const changeProduct = (category: Category["title"]) => {
+    if (category === "All") {
+      setProductsSelected(products);
     } else {
-      const newArr: Product[] = []
+      const newArr: Product[] = [];
       products.map((p) => {
         if (p.category === category) {
-          newArr.push(p)
+          newArr.push(p);
         }
-      })
-      setProductsSelected(newArr)
+      });
+      setProductsSelected(newArr);
     }
-  }
+  };
 
   const handleAddToCart = (product: Product) => {
     setCart((cart) => cart.concat(product));
@@ -72,26 +67,19 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
       <Header />
       <NavCategories
         CATEGORIES={CATEGORIES}
-        render={(cat: any) => (
+        render={(cat: Category) => (
           <ItemCategory
             key={cat.title}
             changeProduct={() => changeProduct(cat.title)}
             title={cat.title}
             image={cat.image}
-
           />
         )}
       />
       <Stack spacing={6}>
-        <Grid
-          gridGap={6}
-          // templateColumns="repeat(auto-fill, minmax(240px, 1fr))"
-          templateColumns='1fr'
-          backgroundColor="white"
-          borderTopRadius="20px"
-
-        >
-          {productsSelected.map((product) => (
+        <ListProduct
+          productsSelected={productsSelected}
+          render={(product: Product) => (
             <ItemProduct
               key={product.id}
               product={product}
@@ -99,11 +87,20 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
               setSelectedImage={setSelectedImage}
               parseCurrency={parseCurrency(product.price)}
             />
-          ))}
-        </Grid>
+          )}
+        ></ListProduct>
         {Boolean(cart.length) && (
           <AnimatePresence>
-            <SendButton cart={cart} text={text} parseCurrency={parseCurrency} />
+            <SendButton
+              cart={cart}
+              text={text}
+              parseCurrency={parseCurrency(
+                cart.reduce(
+                  (total: number, product: Product) => total + product.price,
+                  0
+                )
+              )}
+            />
           </AnimatePresence>
         )}
       </Stack>
@@ -116,12 +113,12 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
             backgroundColor="rgba(0,0,0,0.5)"
             justifyContent="center"
             layoutId={selectedImage}
-            position='fixed'
+            position="fixed"
             top={0}
             left={0}
-            height='100%'
-            width='100%'
-            onClick={() => setSelectedImage('')}
+            height="100%"
+            width="100%"
+            onClick={() => setSelectedImage("")}
           >
             <Img key="image" src={selectedImage}></Img>
           </Flex>

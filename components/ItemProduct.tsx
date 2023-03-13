@@ -1,16 +1,17 @@
 import { HStack, Box, Image, VStack, Text, Button, } from "@chakra-ui/react"
 import { motion } from "framer-motion"
+import React from "react"
 import { Product } from "../products/typesProduct"
 import ProductModal from "./ProductModal"
 
-type ItemsProps = {
-  product: Product
-  handleAddToCart: any
-  setSelectedImage: any
-  parseCurrency: string
+interface Props {
+  product: Product;
+  handleAddToCart: any;
+  setSelectedImage: (value: string) => void;
+  parseCurrency: string;
 }
 
-function ItemProduct({ product, handleAddToCart, setSelectedImage, parseCurrency }: ItemsProps) {
+const ItemProduct: React.FC<Props> = ({ product, handleAddToCart, setSelectedImage, parseCurrency }) => {
   return (
     <HStack
       spacing={3}

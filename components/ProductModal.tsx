@@ -10,14 +10,15 @@ import {
   Text,
   useDisclosure
 } from '@chakra-ui/react'
+import React from 'react'
 import { Product } from '../products/typesProduct'
 
-type ModalProps = {
+interface Props {
   title: Product['title']
   description: Product['description']
 }
 
-function ProductModal({title, description}:ModalProps) {
+const ProductModal: React.FC<Props> = ({title, description}) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>

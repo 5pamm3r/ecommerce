@@ -1,7 +1,10 @@
 import { VStack, Heading, Box, Flex, Image, IconButton, Divider } from "@chakra-ui/react"
 import { DragHandleIcon } from "@chakra-ui/icons";
+import React from "react";
 
-function Header() {
+interface Props {}
+
+const Header: React.FC<Props> = () => {
   return (
     <Box>
       <Flex justify="space-between" align="center">

@@ -1,12 +1,14 @@
 import { VStack, Image, Text } from "@chakra-ui/react"
+import React from "react";
+import { Product } from "../products/typesProduct";
 
-type ItemCategoryProps = {
-  title: string;
-  image: string;
-  changeProduct: any;
+interface Props {
+  title: Product['title'];
+  image: Product['image'];
+  changeProduct: VoidFunction;
 }
 
-function ItemCategory({ title, image, changeProduct }: ItemCategoryProps) {
+const ItemCategory: React.FC<Props> = ({ title, image, changeProduct }) => {
   return (
     <>
       <VStack p={4} borderRadius='20px' _hover={{ backgroundColor: 'white' }} onClick={(e)=>changeProduct()}>
