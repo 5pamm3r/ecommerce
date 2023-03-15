@@ -12,6 +12,9 @@ import SendButton from "../../components/SendButton";
 import ItemCategory from "../../components/ItemCategory";
 import { CATEGORIES } from "../../products/CATEGORIES";
 import ListProduct from "../../components/ListProduct";
+import ModalCart from "../../components/ModalCart";
+import ItemCart from "../../components/ItemCart";
+import { ItemCartTypes } from "../../products/typesItemCart";
 
 interface Props {
   products: Product[];
@@ -24,11 +27,14 @@ const parseCurrency = (value: number): string => {
   });
 };
 const IndexRoute: React.FC<Props> = ({ products }) => {
-  const [cart, setCart] = React.useState<Product[]>([]);
+  const [cart, setCart] = React.useState<ItemCartTypes[]>([]);
   const [selectedImage, setSelectedImage] =
     React.useState<Product["image"]>("");
   const [productsSelected, setProductsSelected] =
     React.useState<Product[]>(products);
+  const [count, setCount] = React.useState<number>(1);
+  
+  
   const text = React.useMemo(() => {
     return cart
       .reduce(
@@ -60,11 +66,30 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
   };
 
   const handleAddToCart = (product: Product) => {
-    setCart((cart) => cart.concat(product));
+    const newItem = {
+      ...product,
+      id: (Math.random()*1000).toString()
+    }
+    setCart((cart:any) => cart.concat(newItem));
+    console.log(cart)
+
   };
   return (
     <Stack>
-      <Header />
+      <Header>
+        <ModalCart 
+          cart={cart}
+          render={(item:Product)=>(
+            <ItemCart 
+              key={item.id}
+              image={item.image}
+              count={count}
+              title={item.title}
+              total={parseCurrency(item.price * count)}
+            />
+          )}
+        />
+      </Header>
       <NavCategories
         CATEGORIES={CATEGORIES}
         render={(cat: Category) => (

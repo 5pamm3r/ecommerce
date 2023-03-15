@@ -1,19 +1,17 @@
 import { VStack, Heading, Box, Flex, Image, IconButton, Divider } from "@chakra-ui/react"
-import { DragHandleIcon } from "@chakra-ui/icons";
 import React from "react";
+import { Product } from "../products/typesProduct";
+import ModalCart from "./ModalCart";
 
-interface Props {}
+interface Props {
+  children: any
+}
 
-const Header: React.FC<Props> = () => {
+const Header: React.FC<Props> = ({ children }) => {
   return (
     <Box>
       <Flex justify="space-between" align="center">
-        <IconButton
-          aria-label="settings"
-          fontSize="md"
-          size="sm"
-          icon={<DragHandleIcon />}
-        />
+       {children}
         <Image
           borderRadius={9999}
           src="//placehold.it/40x40"
