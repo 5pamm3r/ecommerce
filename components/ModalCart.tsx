@@ -31,7 +31,7 @@ const ModalCart: React.FC<Props> = ({ cart, render, parseCurrency }) => {
     <>
       <IconButton
           aria-label="settings"
-          size='sm'
+          size='xs'
           ml={-2}
           icon={<AiOutlineShoppingCart style={{width: '100%', height:'100%'}} />}
           onClick={onOpen}

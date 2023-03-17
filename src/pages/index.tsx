@@ -107,7 +107,7 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
           />
         )}
       />
-      <Stack spacing={6}>
+      <Stack spacing={6} pt={6}>
         <ListProduct
           productsSelected={productsSelected}
           render={(product: Product) => (
@@ -133,7 +133,6 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
         {Boolean(cart.length) && (
           <AnimatePresence>
             <SendButton
-              cart={cart}
               text={text}
               totalItems={cart.reduce((total: number, e: ItemCartTypes) => total + e.count, 0)}
               totalPrice={parseCurrency(cart.reduce((total: number, e: ItemCartTypes) => total + e.total, 0))}

@@ -1,7 +1,5 @@
 import { VStack, Heading, Box, Flex, Image, IconButton, Divider } from "@chakra-ui/react"
 import React from "react";
-import { Product } from "../products/typesProduct";
-import ModalCart from "./ModalCart";
 
 interface Props {
   children: any

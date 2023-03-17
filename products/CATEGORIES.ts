@@ -6,19 +6,19 @@ export const CATEGORIES:Category[] = [
     image: 'https://img.icons8.com/color/48/null/refreshments.png'
   },
   {
-    title: 'Burger',
+    title: 'Burgers',
     image: 'https://img.icons8.com/doodle/48/null/hamburger.png'
   },
   {
-    title: 'Pizza',
+    title: 'Pizzas',
     image: 'https://img.icons8.com/emoji/48/null/pizza-emoji.png'
   },
   {
-    title: 'Cocktail',
+    title: 'Drinks',
     image: 'https://img.icons8.com/emoji/48/null/tropical-drink.png'
   },
   {
-    title: 'Dessert',
+    title: 'Desserts',
     image: 'https://img.icons8.com/color/48/null/cake.png'
   }
 ]

@@ -10,10 +10,8 @@ interface Props {
 const ListProduct: React.FC<Props> = ({ productsSelected, render }) => {
   return (
     <Grid
-      gridGap={6}
-      // templateColumns="repeat(auto-fill, minmax(240px, 1fr))"
+      gridGap={2}
       templateColumns='1fr'
-      backgroundColor="white"
       borderTopRadius="20px"
 
     >
