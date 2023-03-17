@@ -8,5 +8,5 @@ export interface ItemCartTypes {
   image: Product['image'];
   price: Product['price'];
   count: number;
-  total: string
+  total: number;
 }

@@ -1,29 +1,32 @@
-import { Box, HStack, IconButton, Image, Text } from '@chakra-ui/react';
+import { Box, Grid, HStack, IconButton, Image, Text } from '@chakra-ui/react';
 import React from 'react'
 import { Product } from '../products/typesProduct';
 import { DeleteIcon } from '@chakra-ui/icons'
+import { ItemCartTypes } from '../products/typesItemCart';
 
 interface Props {
   image: Product['image'];
   count: number;
   title: Product['title'];
   total: string;
+  onDelete: VoidFunction;
 }
 
-const ItemCart: React.FC<Props> = ({ image, count, title, total }) => {
+const ItemCart: React.FC<Props> = ({ image, count, title, total, onDelete}) => {
+  
   return (
-    <HStack fontSize={[ 'xs', 'sm', 'md']} justify='space-between' mb='20px'>
+    <Grid fontSize={['sm', 'md']} templateColumns='auto auto auto 1fr auto' gap={2} alignItems='center' mb='20px'>
       <Box w='50px'>
         <Image src={image} alt={title} w='100%' />
       </Box>
       <Text>{count}</Text>
       <Text>x</Text>
       <Box >
-        <Text>{title}</Text>
+        <Text noOfLines={1}>{title}</Text>
         <Text>{total}</Text>
       </Box>
-      <IconButton icon={<DeleteIcon />} aria-label='Delete' />
-    </HStack>
+      <IconButton icon={<DeleteIcon />} aria-label='Delete' onClick={onDelete} />
+    </Grid>
   )
 }
 

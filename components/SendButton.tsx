@@ -6,10 +6,11 @@ import { Product } from "../products/typesProduct"
 interface Props {
   cart: Product[]
   text: string;
-  parseCurrency: string;
+  totalPrice: string;
+  totalItems: number;
 }
 
-const SendButton: React.FC<Props> = ({ cart, text, parseCurrency }) => {
+const SendButton: React.FC<Props> = ({ cart, text, totalPrice, totalItems }) => {
   return (
     <Flex
       alignItems="center"
@@ -31,7 +32,7 @@ const SendButton: React.FC<Props> = ({ cart, text, parseCurrency }) => {
           <Image src="https://icongr.am/fontawesome/whatsapp.svg?size=32&color=ffffff" alt='' />
         }
       >
-        {cart.length} items ({parseCurrency})
+        {totalItems} items ({totalPrice})
       </Button>
     </Flex>
   )

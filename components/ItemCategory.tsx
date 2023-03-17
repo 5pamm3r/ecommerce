@@ -11,7 +11,7 @@ interface Props {
 const ItemCategory: React.FC<Props> = ({ title, image, changeProduct }) => {
   return (
     <>
-      <VStack fontSize={['xs', 'sm', 'md']} p={4} borderRadius='20px' _hover={{ backgroundColor: 'white' }} onClick={(e)=>changeProduct()}>
+      <VStack fontSize={['sm', 'md']} p={4} borderRadius='20px' _hover={{ backgroundColor: 'white' }} onClick={(e)=>changeProduct()}>
           <Image w={['30px', '40px', '50px']} minW='30px' src={image} alt="All menu" />
           <Text fontWeight='bold'>{title}</Text>
       </VStack>

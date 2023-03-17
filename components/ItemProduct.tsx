@@ -1,4 +1,4 @@
-import { HStack, Box, Image, VStack, Text, Button, } from "@chakra-ui/react"
+import { HStack, Box, Image, VStack, Text, Button, Grid, } from "@chakra-ui/react"
 import { motion } from "framer-motion"
 import React from "react"
 import { Product } from "../products/typesProduct"
@@ -8,18 +8,22 @@ interface Props {
   product: Product;
   handleAddToCart: any;
   setSelectedImage: (value: string) => void;
-  parseCurrency: string;
+  price: string;
+  children: any;
 }
 
-const ItemProduct: React.FC<Props> = ({ product, handleAddToCart, setSelectedImage, parseCurrency }) => {
+const ItemProduct: React.FC<Props> = ({ product, handleAddToCart, setSelectedImage, price, children }) => {
   return (
-    <HStack
-      spacing={3}
+    <Grid
+      // spacing={3}
       padding={4}
       borderRadius="md"
-      justify="space-between"
+      templateColumns='auto 1fr auto'
+      alignItems='center'
+      gap={[5, 10, 20]}
+      // justify="space-between"
     >
-      <Box w={[ '50px', '80px', '120px', '160px']} h={[ '50px', '80px', '120px', '160px']}>
+      <Box w={[ '50px', '80px', '120px', '160px']} h={'fit-content'} >
         <Image
           w='100%'
           as={motion.img}
@@ -34,22 +38,23 @@ const ItemProduct: React.FC<Props> = ({ product, handleAddToCart, setSelectedIma
           onClick={() => setSelectedImage(product.image)}
         />
       </Box>
-      <VStack spacing={1} align='start' fontSize={[ 'xs', 'sm', 'md', 'xl']}>
-        <Text fontWeight='bold'>{product.title}</Text>
+      <VStack spacing={1} align='start' fontSize={['sm', 'md', 'xl']} w='fit-content' >
+        <Text noOfLines={1} fontWeight='bold'>{product.title}</Text>
         <Text fontWeight={500} color="green.500">
-          {parseCurrency}
+          {price}
         </Text>
-        <ProductModal title={product.title} description={product.description} />
+        {children}
       </VStack>
       <Button
         colorScheme="primary"
         size="sm"
         variant="outline"
         onClick={() => handleAddToCart(product)}
+        w='fit-content'
       >
         Add
       </Button>
-    </HStack>
+    </Grid>
   )
 }
 export default ItemProduct

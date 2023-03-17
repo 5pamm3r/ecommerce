@@ -9,21 +9,21 @@ import {
   DrawerCloseButton,
   useDisclosure,
   IconButton,
-  Input,
   Button,
-  Box,
-  Text
+  Text,
+  HStack,
+  Heading
 } from '@chakra-ui/react'
-import { DragHandleIcon } from "@chakra-ui/icons";
-import { Product } from '../products/typesProduct';
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import { ItemCartTypes } from '../products/typesItemCart';
 
 interface Props {
   cart: ItemCartTypes[]
   render: any
+  parseCurrency: (value: number) => string;
 }
 
-const ModalCart: React.FC<Props> = ({ cart, render }) => {
+const ModalCart: React.FC<Props> = ({ cart, render, parseCurrency }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef:any = React.useRef()
 
@@ -31,9 +31,9 @@ const ModalCart: React.FC<Props> = ({ cart, render }) => {
     <>
       <IconButton
           aria-label="settings"
-          fontSize="md"
-          size="sm"
-          icon={<DragHandleIcon />}
+          size='sm'
+          ml={-2}
+          icon={<AiOutlineShoppingCart style={{width: '100%', height:'100%'}} />}
           onClick={onOpen}
         />
       <Drawer
@@ -51,11 +51,11 @@ const ModalCart: React.FC<Props> = ({ cart, render }) => {
             {cart.map(render)}
           </DrawerBody>
 
-          <DrawerFooter>
-            <Box>
-              <Text>Total</Text>
-              <Text>{cart.reduce((total:any, e:any) => total + e.total, 0)}</Text>
-            </Box>
+          <DrawerFooter display='flex' flexDir='column'>
+            <HStack mb={8} justify='space-between' w='100%'>
+              <Heading as='h3'>Total</Heading>
+              <Text>{parseCurrency(cart.reduce((total:number, e:ItemCartTypes) => total + e.total, 0))}</Text>
+            </HStack>
             <Button colorScheme='whatsapp' m='auto'>Send order</Button>
           </DrawerFooter>
         </DrawerContent>

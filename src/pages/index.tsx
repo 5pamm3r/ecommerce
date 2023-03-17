@@ -15,6 +15,7 @@ import ListProduct from "../../components/ListProduct";
 import ModalCart from "../../components/ModalCart";
 import ItemCart from "../../components/ItemCart";
 import { ItemCartTypes } from "../../products/typesItemCart";
+import ProductModal from "../../components/ProductModal";
 
 interface Props {
   products: Product[];
@@ -32,7 +33,6 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
     React.useState<Product["image"]>("");
   const [productsSelected, setProductsSelected] =
     React.useState<Product[]>(products);
-  const [count, setCount] = React.useState<number>(1);
   
   
   const text = React.useMemo(() => {
@@ -65,27 +65,33 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
     }
   };
 
-  const handleAddToCart = (product: Product) => {
+  const handleAddToCart = (product: Product, count?: number) => {
     const newItem = {
       ...product,
-      id: (Math.random()*1000).toString()
+      id: (Math.random()*1000).toString(),
+      count: count || 1,
+      total: (count || 1) * product.price
     }
     setCart((cart:any) => cart.concat(newItem));
-    console.log(cart)
-
   };
+
+  const onDelete = (id: ItemCartTypes['id']) => {
+    setCart(cart=> cart.filter(e=>e.id !== id))
+  }
   return (
     <Stack>
       <Header>
         <ModalCart 
           cart={cart}
-          render={(item:Product)=>(
+          parseCurrency={parseCurrency}
+          render={(item:ItemCartTypes)=>(
             <ItemCart 
               key={item.id}
               image={item.image}
-              count={count}
+              count={item.count}
               title={item.title}
-              total={parseCurrency(item.price * count)}
+              total={parseCurrency(item.total)}
+              onDelete={()=>onDelete(item.id)}
             />
           )}
         />
@@ -110,8 +116,18 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
               product={product}
               handleAddToCart={handleAddToCart}
               setSelectedImage={setSelectedImage}
-              parseCurrency={parseCurrency(product.price)}
-            />
+              price={parseCurrency(product.price)}
+            >
+              <ProductModal 
+                title={product.title} 
+                description={product.description} 
+                parseCurrency={parseCurrency} 
+                price={product.price}
+                product={product}
+                handleAddToCart={handleAddToCart}
+                image={product.image}
+              />
+            </ItemProduct>
           )}
         ></ListProduct>
         {Boolean(cart.length) && (
@@ -119,12 +135,8 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
             <SendButton
               cart={cart}
               text={text}
-              parseCurrency={parseCurrency(
-                cart.reduce(
-                  (total: number, product: Product) => total + product.price,
-                  0
-                )
-              )}
+              totalItems={cart.reduce((total: number, e: ItemCartTypes) => total + e.count, 0)}
+              totalPrice={parseCurrency(cart.reduce((total: number, e: ItemCartTypes) => total + e.total, 0))}
             />
           </AnimatePresence>
         )}
