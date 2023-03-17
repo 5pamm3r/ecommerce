@@ -1,21 +1,19 @@
-import { Flex, Button, Image, Link, } from "@chakra-ui/react"
+import { Button, Image, Link, Stack, } from "@chakra-ui/react"
 import { motion } from "framer-motion"
 import React from "react"
-import { Product } from "../products/typesProduct"
 
 interface Props {
-  cart: Product[]
   text: string;
   totalPrice: string;
   totalItems: number;
 }
 
-const SendButton: React.FC<Props> = ({ cart, text, totalPrice, totalItems }) => {
+const SendButton: React.FC<Props> = ({ text, totalPrice, totalItems }) => {
   return (
-    <Flex
-      alignItems="center"
+    <Stack
+      align="center"
       bottom={4}
-      justifyContent="center"
+      justify="center"
       position="sticky"
       as={motion.div}
       initial={{ scale: 0 }}
@@ -27,14 +25,14 @@ const SendButton: React.FC<Props> = ({ cart, text, totalPrice, totalItems }) => 
         as={Link}
         colorScheme="whatsapp"
         width="fit-content"
-        href={`https://wa.me/0492345?text=${encodeURIComponent(text)}`}
+        href={`https://wa.me/${process.env.NEXT_PUBLIC_NUMBER}?text=${encodeURIComponent(text)}`}
         leftIcon={
           <Image src="https://icongr.am/fontawesome/whatsapp.svg?size=32&color=ffffff" alt='' />
         }
       >
         {totalItems} items ({totalPrice})
       </Button>
-    </Flex>
+    </Stack>
   )
 }
 
