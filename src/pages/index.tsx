@@ -3,8 +3,7 @@ import { GetStaticProps } from "next";
 import { Product } from "../../products/typesProduct";
 import { Category } from "../../products/typesCategory";
 import api from "../../products/api";
-import { Flex, Img, Stack } from "@chakra-ui/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Stack } from "@chakra-ui/react";
 import NavCategories from "../../components/NavCategories";
 import Header from "../../components/Header";
 import ItemProduct from "../../components/ItemProduct";
@@ -16,6 +15,7 @@ import ModalCart from "../../components/ModalCart";
 import ItemCart from "../../components/ItemCart";
 import { ItemCartTypes } from "../../products/typesItemCart";
 import ProductModal from "../../components/ProductModal";
+import ExpandImage from "../../components/ExpandImage";
 
 interface Props {
   products: Product[];
@@ -33,8 +33,7 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
     React.useState<Product["image"]>("");
   const [productsSelected, setProductsSelected] =
     React.useState<Product[]>(products);
-  
-  
+
   const text = React.useMemo(() => {
     return cart
       .reduce(
@@ -68,33 +67,49 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
   const handleAddToCart = (product: Product, count?: number) => {
     const newItem = {
       ...product,
-      id: (Math.random()*1000).toString(),
+      id: (Math.random() * 1000).toString(),
       count: count || 1,
-      total: (count || 1) * product.price
-    }
-    setCart((cart:any) => cart.concat(newItem));
+      total: (count || 1) * product.price,
+    };
+    setCart((cart: any) => cart.concat(newItem));
   };
 
-  const onDelete = (id: ItemCartTypes['id']) => {
-    setCart(cart=> cart.filter(e=>e.id !== id))
-  }
+  const onDelete = (id: ItemCartTypes["id"]) => {
+    setCart((cart) => cart.filter((e) => e.id !== id));
+  };
   return (
     <Stack>
       <Header>
-        <ModalCart 
+        <ModalCart
           cart={cart}
           parseCurrency={parseCurrency}
-          render={(item:ItemCartTypes)=>(
-            <ItemCart 
+          render={(item: ItemCartTypes) => (
+            <ItemCart
               key={item.id}
               image={item.image}
               count={item.count}
               title={item.title}
               total={parseCurrency(item.total)}
-              onDelete={()=>onDelete(item.id)}
+              onDelete={() => onDelete(item.id)}
             />
           )}
-        />
+        >
+          {Boolean(cart.length) && (
+            <SendButton
+              text={text}
+              totalItems={cart.reduce(
+                (total: number, e: ItemCartTypes) => total + e.count,
+                0
+              )}
+              totalPrice={parseCurrency(
+                cart.reduce(
+                  (total: number, e: ItemCartTypes) => total + e.total,
+                  0
+                )
+              )}
+            />
+          )}
+        </ModalCart>
       </Header>
       <NavCategories
         CATEGORIES={CATEGORIES}
@@ -107,59 +122,50 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
           />
         )}
       />
-      <Stack spacing={6} pt={6}>
-        <ListProduct
-          productsSelected={productsSelected}
-          render={(product: Product) => (
-            <ItemProduct
-              key={product.id}
+      <ListProduct
+        productsSelected={productsSelected}
+        render={(product: Product) => (
+          <ItemProduct
+            key={product.id}
+            product={product}
+            handleAddToCart={handleAddToCart}
+            setSelectedImage={setSelectedImage}
+            price={parseCurrency(product.price)}
+          >
+            <ProductModal
+              title={product.title}
+              description={product.description}
+              parseCurrency={parseCurrency}
+              price={product.price}
               product={product}
               handleAddToCart={handleAddToCart}
-              setSelectedImage={setSelectedImage}
-              price={parseCurrency(product.price)}
-            >
-              <ProductModal 
-                title={product.title} 
-                description={product.description} 
-                parseCurrency={parseCurrency} 
-                price={product.price}
-                product={product}
-                handleAddToCart={handleAddToCart}
-                image={product.image}
-              />
-            </ItemProduct>
-          )}
-        ></ListProduct>
-        {Boolean(cart.length) && (
-          <AnimatePresence>
-            <SendButton
-              text={text}
-              totalItems={cart.reduce((total: number, e: ItemCartTypes) => total + e.count, 0)}
-              totalPrice={parseCurrency(cart.reduce((total: number, e: ItemCartTypes) => total + e.total, 0))}
+              image={product.image}
             />
-          </AnimatePresence>
+          </ItemProduct>
         )}
-      </Stack>
-      <AnimatePresence>
-        {selectedImage && (
-          <Flex
-            key="backdrop"
-            alignItems="center"
-            as={motion.div}
-            backgroundColor="rgba(0,0,0,0.5)"
-            justifyContent="center"
-            layoutId={selectedImage}
-            position="fixed"
-            top={0}
-            left={0}
-            height="100%"
-            width="100%"
-            onClick={() => setSelectedImage("")}
-          >
-            <Img key="image" src={selectedImage}></Img>
-          </Flex>
+      >
+        {Boolean(cart.length) && (
+          <SendButton
+            text={text}
+            totalItems={cart.reduce(
+              (total: number, e: ItemCartTypes) => total + e.count,
+              0
+            )}
+            totalPrice={parseCurrency(
+              cart.reduce(
+                (total: number, e: ItemCartTypes) => total + e.total,
+                0
+              )
+            )}
+          />
         )}
-      </AnimatePresence>
+      </ListProduct>
+      {selectedImage && (
+        <ExpandImage
+          selectedImage={selectedImage}
+          setSelectedImage={setSelectedImage}
+        />
+      )};
     </Stack>
   );
 };
