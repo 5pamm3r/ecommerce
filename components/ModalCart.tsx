@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import {
   Drawer,
   DrawerBody,
@@ -9,7 +9,6 @@ import {
   DrawerCloseButton,
   useDisclosure,
   IconButton,
-  Button,
   Text,
   HStack,
   Heading
@@ -21,9 +20,10 @@ interface Props {
   cart: ItemCartTypes[]
   render: any
   parseCurrency: (value: number) => string;
+  children: ReactNode;
 }
 
-const ModalCart: React.FC<Props> = ({ cart, render, parseCurrency }) => {
+const ModalCart: React.FC<Props> = ({ cart, render, parseCurrency, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef:any = React.useRef()
 
@@ -56,7 +56,7 @@ const ModalCart: React.FC<Props> = ({ cart, render, parseCurrency }) => {
               <Heading as='h3'>Total</Heading>
               <Text>{parseCurrency(cart.reduce((total:number, e:ItemCartTypes) => total + e.total, 0))}</Text>
             </HStack>
-            <Button colorScheme='whatsapp' m='auto'>Send order</Button>
+            {children}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
