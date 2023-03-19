@@ -16,12 +16,17 @@ const ItemProduct: React.FC<Props> = ({ product, handleAddToCart, setSelectedIma
     <Grid
       padding={4}
       borderRadius="md"
-      templateColumns='auto 1fr auto'
+      // templateColumns='auto 1fr auto'
       alignItems='center'
-      gap={[5, 10, 20]}
+      gap={[5, 10, 8]}
       backgroundColor='white'
+      gridTemplateColumns={['auto 1fr auto', 'auto 1fr auto' , 'auto', 'auto', 'auto']}
+      gridTemplateRows={['auto','auto','auto 1fr auto', 'auto 1fr auto','auto 1fr auto']}
+      h='fit-content'
+      justifyItems={{ base: 'start', md: 'center'}} 
+      
     >
-      <Box w={[ '50px', '80px', '120px', '160px']} h={'fit-content'} >
+      <Box w={[ '50px', '80px', '120px', '160px']} h={[ '50px', '80px', '120px', '160px']} alignItems='center' display='flex' >
         <Image
           w='100%'
           as={motion.img}
@@ -36,7 +41,7 @@ const ItemProduct: React.FC<Props> = ({ product, handleAddToCart, setSelectedIma
           onClick={() => setSelectedImage(product.image)}
         />
       </Box>
-      <VStack spacing={1} align='start' fontSize={['sm', 'md', 'xl']} w='fit-content' >
+      <VStack spacing={1} align='start' fontSize={['sm', 'md', 'xl']} w='fit-content' justifySelf='start' >
         <Text noOfLines={1} fontWeight='bold'>{product.title}</Text>
         <Text fontWeight={500} color="#236441">
           {price}
