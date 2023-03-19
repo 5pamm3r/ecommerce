@@ -9,7 +9,7 @@ interface Props {
 
 const NavCategories: React.FC<Props> = ({ CATEGORIES, render }) => {
   return (
-    <Grid mt={6} overflowY={'scroll'} whiteSpace={'nowrap'} templateColumns='repeat(5,1fr)' >
+    <Grid mt={6} overflowX={['scroll','auto']} whiteSpace={'nowrap'} templateColumns='repeat(5,1fr)' >
       { CATEGORIES.map(render) }
     </Grid>
   )
