@@ -116,20 +116,6 @@ const ProductModal: React.FC<Props> = ({
             </ModalBody>
 
             <ModalFooter display="flex" flexDir="column">
-              <HStack mt={6} justify="space-between" w="100%">
-                <VStack>
-                  <Image src="//placehold.it/40x40" />
-                  <Text>Cheese</Text>
-                </VStack>
-                <VStack>
-                  <Image src="//placehold.it/40x40" />
-                  <Text>Meat</Text>
-                </VStack>
-                <VStack>
-                  <Image src="//placehold.it/40x40" />
-                  <Text>Bacon</Text>
-                </VStack>
-              </HStack>
               <Button colorScheme="blue" m="20px auto 0" onClick={closeModal}>
                 Add to Cart
               </Button>
