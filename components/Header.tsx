@@ -1,28 +1,29 @@
-import { VStack, Heading, Box, Flex, Image, IconButton, Divider } from "@chakra-ui/react"
+import { VStack, Heading, Box, Flex, Image, Icon, Divider, HStack } from "@chakra-ui/react"
 import React from "react";
+import { BiMap, BiUser } from 'react-icons/bi'
 
 interface Props {
   children: any
+  address: any
 }
 
-const Header: React.FC<Props> = ({ children }) => {
+const Header: React.FC<Props> = ({ children, address }) => {
   return (
     <Box>
       <Flex justify="space-between" align="center">
        {children}
-        <Image
-          borderRadius={9999}
-          src="//placehold.it/40x40"
-          align="flex-end"
-        />
+        <Icon as={BiUser} boxSize={7} />
       </Flex>
       <VStack align="flex-start">
         <Heading as="h1" mt={2}>
           Food Truck Delivery
         </Heading>
-        <Heading as="h2" mt={0} size="md">
-          In less than 20 min
-        </Heading>
+        <HStack align='center'>
+          <Icon as={BiMap} />
+          <Heading as="h2" mt={0} size="md">
+            {address}
+          </Heading>
+        </HStack>
       </VStack>
       <Divider marginY={6} />
     </Box>
