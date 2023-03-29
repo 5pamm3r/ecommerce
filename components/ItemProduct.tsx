@@ -1,34 +1,66 @@
-import { Box, Image, VStack, Text, Button, Grid, } from "@chakra-ui/react"
-import { motion } from "framer-motion"
-import React from "react"
-import { Product } from "../products/typesProduct"
+import {
+  Box,
+  Image,
+  VStack,
+  Text,
+  IconButton,
+  Grid,
+  HStack,
+  Stack,
+} from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import React from "react";
+import { Product } from "../products/typesProduct";
+import { AddIcon } from "@chakra-ui/icons";
 
 interface Props {
   product: Product;
   handleAddToCart: any;
   setSelectedImage: (value: string) => void;
   price: string;
-  children: any;
+  children: React.ReactNode;
 }
 
-const ItemProduct: React.FC<Props> = ({ product, handleAddToCart, setSelectedImage, price, children }) => {
+const ItemProduct: React.FC<Props> = ({
+  product,
+  handleAddToCart,
+  setSelectedImage,
+  price,
+  children,
+}) => {
   return (
     <Grid
       padding={4}
       borderRadius="md"
       // templateColumns='auto 1fr auto'
-      alignItems='center'
+      alignItems="center"
       gap={[5, 10, 8]}
-      backgroundColor='white'
-      gridTemplateColumns={['auto 1fr auto', 'auto 1fr auto' , 'auto', 'auto', 'auto']}
-      gridTemplateRows={['auto','auto','auto 1fr auto', 'auto 1fr auto','auto 1fr auto']}
-      h='fit-content'
-      justifyItems={{ base: 'start', md: 'center'}} 
-      
+      backgroundColor="white"
+      gridTemplateColumns={[
+        "auto 1fr auto",
+        "auto 1fr auto",
+        "auto",
+        "auto",
+        "auto",
+      ]}
+      gridTemplateRows={[
+        "auto",
+        "auto",
+        "auto 1fr auto",
+        "auto 1fr auto",
+        "auto 1fr auto",
+      ]}
+      h="fit-content"
+      justifyItems={{ base: "start", md: "center" }}
     >
-      <Box w={[ '50px', '80px', '120px', '160px']} h={[ '50px', '80px', '120px', '160px']} alignItems='center' display='flex' >
+      <Box
+        w={["50px", "80px", "120px", "160px"]}
+        h={["50px", "80px", "120px", "160px"]}
+        alignItems="center"
+        display="flex"
+      >
         <Image
-          w='100%'
+          w="100%"
           as={motion.img}
           cursor="pointer"
           layoutId={product.image}
@@ -37,27 +69,41 @@ const ItemProduct: React.FC<Props> = ({ product, handleAddToCart, setSelectedIma
           maxHeight={128}
           objectFit="cover"
           src={product.image}
-          loading='lazy'
+          loading="lazy"
           onClick={() => setSelectedImage(product.image)}
         />
       </Box>
-      <VStack spacing={1} align='start' fontSize={['sm', 'md', 'xl']} w='fit-content' justifySelf='start' >
-        <Text noOfLines={1} fontWeight='bold'>{product.title}</Text>
-        <Text fontWeight={500} color="#236441">
-          {price}
-        </Text>
-        {children}
-      </VStack>
-      <Button
-        colorScheme="primary"
-        size="sm"
-        variant="outline"
-        onClick={() => handleAddToCart(product)}
-        w='fit-content'
+      <VStack
+        spacing={1}
+        align="start"
+        fontSize={["sm", "md", "xl"]}
+        w="100%"
+        justifySelf="start"
       >
-        Add
-      </Button>
+        <Text noOfLines={1} fontWeight="bold">
+          {product.title}
+        </Text>
+        <HStack w="100%" justify="space-between">
+          <Stack>
+            <Text fontWeight={500} color="#236441">
+              {price}
+            </Text>
+            {children}
+          </Stack>
+          <Box>
+            <IconButton
+              aria-label="Add"
+              colorScheme='orange'
+              icon={<AddIcon />}
+              size="sm"
+              variant="outline"
+              onClick={() => handleAddToCart(product)}
+              w="fit-content"
+            />
+          </Box>
+        </HStack>
+      </VStack>
     </Grid>
-  )
-}
-export default ItemProduct
+  );
+};
+export default ItemProduct;
