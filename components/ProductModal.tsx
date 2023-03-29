@@ -62,7 +62,7 @@ const ProductModal: React.FC<Props> = ({
   };
   return (
     <>
-      <Button variant="link" size="sm" onClick={onOpen}>
+      <Button variant="link" mt='0' size="sm" onClick={onOpen}>
         Details
       </Button>
 
@@ -116,7 +116,7 @@ const ProductModal: React.FC<Props> = ({
             </ModalBody>
 
             <ModalFooter display="flex" flexDir="column">
-              <Button colorScheme="blue" m="20px auto 0" onClick={closeModal}>
+              <Button colorScheme="orange" m="20px auto 0" onClick={closeModal}>
                 Add to Cart
               </Button>
             </ModalFooter>
