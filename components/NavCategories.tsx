@@ -1,4 +1,4 @@
-import { Grid} from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import React from 'react';
 import { Category } from '../products/typesCategory';
 
@@ -9,8 +9,8 @@ interface Props {
 
 const NavCategories: React.FC<Props> = ({ CATEGORIES, render }) => {
   return (
-    <Grid mt={6} overflowX={['scroll','auto']} whiteSpace={'nowrap'} templateColumns='repeat(5,1fr)' >
-      { CATEGORIES.map(render) }
+    <Grid mt={6} overflowX={['scroll', 'auto']} whiteSpace={'nowrap'} gap={2} templateColumns='repeat(5,1fr)' >
+      {CATEGORIES.map(render)}
     </Grid>
   )
 }
