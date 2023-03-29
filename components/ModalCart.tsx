@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode } from "react";
 import {
   Drawer,
   DrawerBody,
@@ -11,34 +11,63 @@ import {
   IconButton,
   Text,
   HStack,
-  Heading
-} from '@chakra-ui/react'
+  Heading,
+  Box,
+  VStack,
+  Divider,
+} from "@chakra-ui/react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { ItemCartTypes } from '../products/typesItemCart';
+import { ItemCartTypes } from "../products/typesItemCart";
 
 interface Props {
-  cart: ItemCartTypes[]
-  render: any
+  cart: ItemCartTypes[];
+  render: any;
   parseCurrency: (value: number) => string;
   children: ReactNode;
+  deliveryFee: number;
+  subTotal: number;
 }
 
-const ModalCart: React.FC<Props> = ({ cart, render, parseCurrency, children }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const btnRef:any = React.useRef()
+const ModalCart: React.FC<Props> = ({
+  cart,
+  render,
+  parseCurrency,
+  children,
+  deliveryFee,
+  subTotal,
+}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef: any = React.useRef();
 
   return (
     <>
-      <IconButton
+      <Box position="relative">
+        <Text
+          as="span"
+          position="absolute"
+          top="-11px"
+          left="9px"
+          color="white"
+          fontWeight="bold"
+          zIndex="1"
+          onClick={onOpen}
+        >
+          {cart.length > 0 ? cart.length : ''}
+        </Text>
+        <IconButton
+          backgroundColor='transparent'
+          color='whiteAlpha.800'
           aria-label="settings"
-          size='xs'
-          ml={-2}
-          icon={<AiOutlineShoppingCart style={{width: '100%', height:'100%'}} />}
+          size="xs"
+          icon={
+            <AiOutlineShoppingCart style={{ width: "100%", height: "100%" }} />
+          }
           onClick={onOpen}
         />
+      </Box>
       <Drawer
         isOpen={isOpen}
-        placement='left'
+        placement="left"
         onClose={onClose}
         finalFocusRef={btnRef}
       >
@@ -47,22 +76,32 @@ const ModalCart: React.FC<Props> = ({ cart, render, parseCurrency, children }) =
           <DrawerCloseButton />
           <DrawerHeader>My Order</DrawerHeader>
 
-          <DrawerBody>
-            {cart.map(render)}
-          </DrawerBody>
+          <DrawerBody>{cart.map(render)}</DrawerBody>
 
-          <DrawerFooter display='flex' flexDir='column'>
-            <HStack mb={8} justify='space-between' w='100%'>
-              <Heading as='h3'>Total</Heading>
-              <Text>{parseCurrency(cart.reduce((total:number, e:ItemCartTypes) => total + e.total, 0))}</Text>
+          <DrawerFooter display="flex" flexDir="column">
+            <VStack w='100%'>
+              <HStack w='100%' justify='space-between'>
+                <Heading as='h4' size='xs' fontWeight='400'>Sub total</Heading>
+                <Text fontSize='xs' fontWeight='400'>{parseCurrency(subTotal)}</Text>
+              </HStack>
+              <HStack w='100%' justify='space-between'>
+                <Heading as='h4' size='xs' fontWeight='400'>Delivery Fee</Heading>
+                <Text fontSize='xs' fontWeight='400'>{parseCurrency(deliveryFee)}</Text>
+              </HStack>
+            </VStack>
+            <Divider m='8px 0' variant='dashed' />
+            <HStack mb={4} justify="space-between" w="100%">
+              <Heading as="h3" size='md'>Total</Heading>
+              <Text fontWeight='bold'>
+                {parseCurrency(subTotal + deliveryFee)}
+              </Text>
             </HStack>
             {children}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>
-  )
-}
+  );
+};
 
-
-export default ModalCart
+export default ModalCart;
