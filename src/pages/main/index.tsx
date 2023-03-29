@@ -18,6 +18,7 @@ import ProductModal from "../../../components/ProductModal";
 import ExpandImage from "../../../components/ExpandImage";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Search from "../../../components/Search";
 
 interface Props {
   products: Product[];
@@ -30,13 +31,25 @@ const parseCurrency = (value: number): string => {
   });
 };
 const IndexRoute: React.FC<Props> = ({ products }) => {
-  const [cart, setCart] = React.useState<ItemCartTypes[]>([]);
-  const [selectedImage, setSelectedImage] =
-    React.useState<Product["image"]>("");
-  const [productsSelected, setProductsSelected] =
-    React.useState<Product[]>(products);  
   const router = useRouter();
-  const { address } = router.query
+  const { username, address } = router.query;
+
+  const [cart, setCart] = React.useState<ItemCartTypes[]>([]);
+  const [selectedImage, setSelectedImage] = React.useState<Product["image"]>("");
+  const [productsSelected, setProductsSelected] = React.useState<Product[]>(products);
+  const [searchedValue, setSearchedValue] = React.useState<string>("");
+  const [inputAddressEditedValue, setInputAddressEditedValue] = React.useState<any>(address);
+  let searchedProducts: Product[] = [];
+  const deliveryFee = 40;
+
+  const [userAddress, setUserAddress] = React.useState<any>(address);
+
+  const [numItems, setNumItems] = React.useState<number>(10);
+  const viewMore = () => {
+    setNumItems(numItems + 10);
+  };
+
+  const subTotal = cart.reduce((total: number, e: ItemCartTypes) => total + e.total, 0)
 
   const text = React.useMemo(() => {
     return cart
@@ -51,10 +64,10 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
         `\nTotal: ${parseCurrency(
           cart.reduce((total, product) => total + product.price, 0)
         )}
-        \nDireccion: ${address}
+        \nDireccion: ${userAddress}
         `
       );
-  }, [cart]);
+  }, [cart, userAddress]);
 
   const changeProduct = (category: Category["title"]) => {
     if (category === "All") {
@@ -83,15 +96,30 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
   const onDelete = (id: ItemCartTypes["id"]) => {
     setCart((cart) => cart.filter((e) => e.id !== id));
   };
+
+  // if (!searchedValue.length >= 1) {
+  //   searchedProducts = productsSelected;
+  // } else {
+  //   return
+  // }
+
   return (
     <Stack>
       <Head>
         <title>Food Truck</title>
       </Head>
-      <Header address={address}>
+      <Header
+        address={userAddress || address}
+        username={username}
+        inputAddressEditedValue={inputAddressEditedValue || address}
+        setInputAddressEditedValue={setInputAddressEditedValue}
+        setUserAddress={setUserAddress}
+      >
         <ModalCart
           cart={cart}
           parseCurrency={parseCurrency}
+          deliveryFee={deliveryFee}
+          subTotal={subTotal}
           render={(item: ItemCartTypes) => (
             <ItemCart
               key={item.id}
@@ -110,16 +138,12 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
                 (total: number, e: ItemCartTypes) => total + e.count,
                 0
               )}
-              totalPrice={parseCurrency(
-                cart.reduce(
-                  (total: number, e: ItemCartTypes) => total + e.total,
-                  0
-                )
-              )}
+              totalPrice={parseCurrency(subTotal + deliveryFee)}
             />
           )}
         </ModalCart>
       </Header>
+      <Search value={searchedValue} setValue={setSearchedValue} />
       <NavCategories
         CATEGORIES={CATEGORIES}
         render={(cat: Category) => (
@@ -133,6 +157,7 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
       />
       <ListProduct
         productsSelected={productsSelected}
+        numItems={numItems}
         render={(product: Product) => (
           <ItemProduct
             key={product.id}
@@ -160,14 +185,10 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
               (total: number, e: ItemCartTypes) => total + e.count,
               0
             )}
-            totalPrice={parseCurrency(
-              cart.reduce(
-                (total: number, e: ItemCartTypes) => total + e.total,
-                0
-              )
-            )}
+            totalPrice={parseCurrency(subTotal + deliveryFee)}
           />
         )}
+        <button onClick={viewMore}>view More</button>
       </ListProduct>
       {selectedImage && (
         <ExpandImage
