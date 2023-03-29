@@ -1,4 +1,4 @@
-import { VStack, Image, Text } from "@chakra-ui/react";
+import { HStack, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { Product } from "../products/typesProduct";
 
@@ -11,11 +11,13 @@ interface Props {
 const ItemCategory: React.FC<Props> = ({ title, image, changeProduct }) => {
   return (
     <>
-      <VStack
+      <HStack
         fontSize={["sm", "md"]}
-        p={4}
+        p='8px 16px'
+        mt={4}
+        mb={4}
         borderRadius="20px"
-        _hover={{ backgroundColor: "white" }}
+        _hover={{ backgroundColor: 'orange.200' }}
         onClick={(e) => changeProduct()}
         cursor='pointer'
       >
@@ -26,7 +28,7 @@ const ItemCategory: React.FC<Props> = ({ title, image, changeProduct }) => {
           alt="All menu"
         />
         <Text fontWeight="bold">{title}</Text>
-      </VStack>
+      </HStack>
     </>
   );
 };
