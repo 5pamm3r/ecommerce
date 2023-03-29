@@ -1,4 +1,4 @@
-import { Button, Image, Link, Stack, } from "@chakra-ui/react"
+import { Button, Image, Link, Stack, Box } from "@chakra-ui/react"
 import { AnimatePresence, motion } from "framer-motion"
 import React from "react"
 
@@ -11,10 +11,10 @@ interface Props {
 const SendButton: React.FC<Props> = ({ text, totalPrice, totalItems }) => {
   return (
     <AnimatePresence>
-      <Stack
-        align="center"
+      <Box
+        m='0 auto !important'
+        w='fit-content'
         bottom={4}
-        justify="center"
         position="sticky"
         as={motion.div}
         initial={{ scale: 0 }}
@@ -24,7 +24,7 @@ const SendButton: React.FC<Props> = ({ text, totalPrice, totalItems }) => {
         <Button
           isExternal
           as={Link}
-          colorScheme="whatsapp"
+          colorScheme="orange"
           width="fit-content"
           href={`https://wa.me/${process.env.NEXT_PUBLIC_NUMBER}?text=${encodeURIComponent(text)}`}
           leftIcon={
@@ -33,7 +33,7 @@ const SendButton: React.FC<Props> = ({ text, totalPrice, totalItems }) => {
         >
           {totalItems} items ({totalPrice})
         </Button>
-      </Stack>
+      </Box>
     </AnimatePresence>
   )
 }
