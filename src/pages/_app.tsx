@@ -14,7 +14,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
           backgroundColor="gray.100"
           boxShadow="md"
           maxWidth="container.xl"
-          padding={4}
+          p={[0, 0, 4, 4]}
         >
           <Component {...pageProps} />
         </Container>
