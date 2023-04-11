@@ -3,13 +3,13 @@ import React from "react";
 import { Product } from "../products/typesProduct"
 
 interface Props {
-  productsSelected: Product[];
+  searchedProducts: Product[];
   render: (value: Product, index: number, array: Product[]) => React.ReactNode;
   children: React.ReactNode;
   numItems: number;
 }
 
-const ListProduct: React.FC<Props> = ({ productsSelected, render, children, numItems }) => {
+const ListProduct: React.FC<Props> = ({ searchedProducts, render, children, numItems }) => {
   return (
     <Stack spacing={6} pt={1}>
       <Grid
@@ -18,7 +18,7 @@ const ListProduct: React.FC<Props> = ({ productsSelected, render, children, numI
         borderTopRadius="20px"
 
       >
-        {productsSelected.slice(0, numItems).map(render)}
+        {searchedProducts.slice(0, numItems).map(render)}
       </Grid>
       {children}
     </Stack>

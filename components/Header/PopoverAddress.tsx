@@ -1,7 +1,6 @@
 import React from 'react'
 import { Popover, Box, PopoverTrigger, IconButton, PopoverContent, FocusLock, PopoverArrow, PopoverCloseButton, useDisclosure } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import FormEditAddress from './FormEditAddress';
 
 
 interface Props {
@@ -9,7 +8,6 @@ interface Props {
   onOpen: VoidFunction
   onClose: VoidFunction
   firstFieldRef: any
-  address: string
   children: React.ReactNode
 }
 

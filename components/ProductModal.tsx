@@ -47,7 +47,7 @@ const ProductModal: React.FC<Props> = ({
   };
   const remove = () => {
     if (count <= 1) {
-      return
+      return;
     }
     setCount(count - 1);
   };
@@ -62,19 +62,23 @@ const ProductModal: React.FC<Props> = ({
   };
   return (
     <>
-      <Button variant="link" mt='0' size="sm" onClick={onOpen}>
+      <Button variant="link" mt="0" size="sm" onClick={onOpen}>
         Details
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent marginLeft="10px" marginRight="10px" backgroundColor='gray.100'>
-          <Box backgroundColor='gray.100' borderRadius='10px 10px 0 0' >
+        <ModalContent
+          marginLeft="10px"
+          marginRight="10px"
+          backgroundColor="gray.100"
+        >
+          <Box backgroundColor="gray.100" borderRadius="10px 10px 0 0">
             <ModalCloseButton />
             <Image w="200px" m="50px auto" src={image} alt={title} />
           </Box>
-          <Box borderRadius='20px 20px 0 0' backgroundColor='white'>
-            <ModalHeader pb='0px'>{title}</ModalHeader>
+          <Box borderRadius="20px 20px 0 0" backgroundColor="white">
+            <ModalHeader pb="0px">{title}</ModalHeader>
             <HStack pl={6}>
               <TimeIcon boxSize={4} />
               <Text>20 - 30 min</Text>
@@ -83,7 +87,7 @@ const ProductModal: React.FC<Props> = ({
               <Text>{description}</Text>
               <HStack justify="space-between" mt={6}>
                 <HStack
-                  height='fit-content'
+                  height="fit-content"
                   fontSize={["sm", "md", "lg"]}
                   border="1px solid black"
                   borderRadius="10px"

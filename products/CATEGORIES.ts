@@ -1,6 +1,6 @@
 import { Category } from "./typesCategory";
 
-export const CATEGORIES:Category[] = [
+export const CATEGORIES: Category[] = [
   {
     title: 'All',
     image: 'https://img.icons8.com/color/48/null/refreshments.png'

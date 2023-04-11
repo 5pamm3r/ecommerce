@@ -14,24 +14,25 @@ import React from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { BiUser, BiMapPin } from "react-icons/bi";
+import { useFoodTruck } from "../../components/useFoodTruck";
 
 interface Props { }
 
 const Login: React.FC<Props> = () => {
-  const [address, setAddress] = React.useState<string>("");
-  const [username, setUsername] = React.useState<string>("");
   const [error, setError] = React.useState<boolean>(false);
   const router = useRouter();
+  const { username, setUsername, storedValue, setStoredValue } = useFoodTruck();
 
   const onSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!address || !username) {
+    if (!storedValue || !username) {
       setError(true);
       return;
     }
     setError(false);
-    router.push(`/main?username=${encodeURIComponent(username)}&address=${encodeURIComponent(address)}`)
+    router.push(`/main?id=${storedValue}`);
   };
+
   return (
     <Stack maxW="800px" m="0 auto" backgroundColor="gray.100">
       <Head>
@@ -69,10 +70,10 @@ const Login: React.FC<Props> = () => {
               type="text"
               id="address"
               placeholder=""
-              value={address}
+              value={storedValue}
               backgroundColor="white"
               required
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={(e) => setStoredValue(e.target.value)}
             />
           </InputGroup>
           {!!error && (

@@ -2,17 +2,15 @@ import {
   VStack,
   Heading,
   Box,
-  Flex,
   Text,
   Icon,
-  Divider,
   HStack,
   Highlight,
   useDisclosure,
   Grid,
 } from "@chakra-ui/react";
 import React from "react";
-import { BiMap, BiUser } from "react-icons/bi";
+import { BiMap } from "react-icons/bi";
 import FormEditAddress from "./FormEditAddress";
 import PopoverAddress from "./PopoverAddress";
 import TextInput from "./TextInput";
@@ -24,7 +22,7 @@ interface Props {
   username: any;
   inputAddressEditedValue: any;
   setInputAddressEditedValue: (value: string) => void;
-  setUserAddress: any;
+  setStoredValue: any,
 }
 
 const Header: React.FC<Props> = ({
@@ -33,7 +31,7 @@ const Header: React.FC<Props> = ({
   username,
   inputAddressEditedValue,
   setInputAddressEditedValue,
-  setUserAddress,
+  setStoredValue,
 }) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const firstFieldRef = React.useRef(null);
@@ -43,18 +41,17 @@ const Header: React.FC<Props> = ({
         {children}
         <HStack>
           <Icon as={BiMap} color='whiteAlpha.800' />
-          <Text color='whiteAlpha.800'>{address}</Text>
+          <Text color='whiteAlpha.800' noOfLines={1} maxW={['100px', '200px', 'fit-content']} >{address}</Text>
           <PopoverAddress
             onOpen={onOpen}
             onClose={onClose}
             isOpen={isOpen}
             firstFieldRef={firstFieldRef}
-            address={address}
           >
             <FormEditAddress
               onCancel={onClose}
-              setUserAddress={setUserAddress}
               inputAddressEditedValue={inputAddressEditedValue}
+              setStoredValue={setStoredValue}
             >
               <TextInput
                 label="Edit address"
@@ -62,6 +59,7 @@ const Header: React.FC<Props> = ({
                 ref={firstFieldRef}
                 inputAddressEditedValue={inputAddressEditedValue}
                 setInputAddressEditedValue={setInputAddressEditedValue}
+                address={address}
               />
             </FormEditAddress>
           </PopoverAddress>
@@ -80,4 +78,5 @@ const Header: React.FC<Props> = ({
     </Box>
   );
 };
+
 export default Header;

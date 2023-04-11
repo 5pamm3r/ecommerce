@@ -1,21 +1,19 @@
 import { Stack, ButtonGroup, Button } from '@chakra-ui/react'
 import React from 'react'
-
 interface Props {
   onCancel: VoidFunction
   children: React.ReactNode
-  setUserAddress: (value: string) => void
   inputAddressEditedValue: string
-
+  setStoredValue: any
 }
 
-const FormEditAddress: React.FC<Props> = ({ onCancel, children, setUserAddress, inputAddressEditedValue }) => {
+const FormEditAddress: React.FC<Props> = ({ onCancel, children, inputAddressEditedValue, setStoredValue }) => {
   const onSave = () => {
-    setUserAddress(inputAddressEditedValue)
+    setStoredValue(inputAddressEditedValue)
     onCancel()
   }
   return (
-    <div>
+    <>
       <Stack spacing={4}>
         {children}
         <ButtonGroup display='flex' justifyContent='flex-end'>
@@ -27,7 +25,7 @@ const FormEditAddress: React.FC<Props> = ({ onCancel, children, setUserAddress, 
           </Button>
         </ButtonGroup>
       </Stack>
-    </div>
+    </>
   )
 }
 

@@ -15,6 +15,7 @@ import {
   Box,
   VStack,
   Divider,
+  Stack,
 } from "@chakra-ui/react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { ItemCartTypes } from "../products/typesItemCart";
@@ -26,6 +27,7 @@ interface Props {
   children: ReactNode;
   deliveryFee: number;
   subTotal: number;
+  totalItems: number;
 }
 
 const ModalCart: React.FC<Props> = ({
@@ -35,6 +37,7 @@ const ModalCart: React.FC<Props> = ({
   children,
   deliveryFee,
   subTotal,
+  totalItems,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef: any = React.useRef();
@@ -52,11 +55,11 @@ const ModalCart: React.FC<Props> = ({
           zIndex="1"
           onClick={onOpen}
         >
-          {cart.length > 0 ? cart.length : ''}
+          {totalItems > 0 ? totalItems : ""}
         </Text>
         <IconButton
-          backgroundColor='transparent'
-          color='whiteAlpha.800'
+          backgroundColor="transparent"
+          color="whiteAlpha.800"
           aria-label="settings"
           size="xs"
           icon={
@@ -76,23 +79,41 @@ const ModalCart: React.FC<Props> = ({
           <DrawerCloseButton />
           <DrawerHeader>My Order</DrawerHeader>
 
-          <DrawerBody>{cart.map(render)}</DrawerBody>
+          <DrawerBody backgroundColor="gray.100" borderRadius="20px 20px 0 0">
+            {cart.map(render)}
+          </DrawerBody>
 
-          <DrawerFooter display="flex" flexDir="column">
-            <VStack w='100%'>
-              <HStack w='100%' justify='space-between'>
-                <Heading as='h4' size='xs' fontWeight='400'>Sub total</Heading>
-                <Text fontSize='xs' fontWeight='400'>{parseCurrency(subTotal)}</Text>
+          <DrawerFooter
+            display="flex"
+            flexDir="column"
+            marginTop="-20px"
+            borderRadius="20px 20px 0 0"
+            backgroundColor="whiteAlpha.900"
+          >
+            <VStack w="100%">
+              <HStack w="100%" justify="space-between">
+                <Heading as="h4" size="xs" fontWeight="400">
+                  Sub total
+                </Heading>
+                <Text fontSize="xs" fontWeight="400">
+                  {parseCurrency(subTotal)}
+                </Text>
               </HStack>
-              <HStack w='100%' justify='space-between'>
-                <Heading as='h4' size='xs' fontWeight='400'>Delivery Fee</Heading>
-                <Text fontSize='xs' fontWeight='400'>{parseCurrency(deliveryFee)}</Text>
+              <HStack w="100%" justify="space-between">
+                <Heading as="h4" size="xs" fontWeight="400">
+                  Delivery Fee
+                </Heading>
+                <Text fontSize="xs" fontWeight="400">
+                  {parseCurrency(deliveryFee)}
+                </Text>
               </HStack>
             </VStack>
-            <Divider m='8px 0' variant='dashed' />
-            <HStack mb={4} justify="space-between" w="100%">
-              <Heading as="h3" size='md'>Total</Heading>
-              <Text fontWeight='bold'>
+            <Divider m="8px 0" variant="dashed" />
+            <HStack mb={8} justify="space-between" w="100%">
+              <Heading as="h3" size="md">
+                Total
+              </Heading>
+              <Text fontWeight="bold">
                 {parseCurrency(subTotal + deliveryFee)}
               </Text>
             </HStack>

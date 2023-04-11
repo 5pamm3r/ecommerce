@@ -9,11 +9,11 @@ import {
 import React from "react";
 
 interface Props {
-  value: string;
-  setValue: (value: string) => void;
+  searchedValue: string;
+  setSearchedValue: (value: string) => void;
 }
 
-const Search: React.FC<Props> = ({ value, setValue }) => {
+const Search: React.FC<Props> = ({ searchedValue, setSearchedValue }) => {
   return (
     <>
       <InputGroup
@@ -27,8 +27,8 @@ const Search: React.FC<Props> = ({ value, setValue }) => {
         <Input
           type="text"
           placeholder="Search..."
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={searchedValue}
+          onChange={(e) => setSearchedValue(e.target.value)}
         />
         <InputRightElement>
           <IconButton

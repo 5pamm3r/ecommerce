@@ -1,34 +1,41 @@
-import { HStack, Image, Text } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import React from "react";
 import { Product } from "../products/typesProduct";
+import IconCategory from "./IconCategory";
 
 interface Props {
   title: Product["title"];
   image: Product["image"];
   changeProduct: VoidFunction;
+  categoryBgState: string;
+  setCategoryBgState: (value: string) => void;
 }
 
-const ItemCategory: React.FC<Props> = ({ title, image, changeProduct }) => {
+const ItemCategory: React.FC<Props> = ({
+  title,
+  image,
+  changeProduct,
+  categoryBgState,
+  setCategoryBgState,
+}) => {
+  const onClick = (value: string) => {
+    setCategoryBgState(value);
+    changeProduct();
+  };
   return (
     <>
-      <HStack
-        fontSize={["sm", "md"]}
-        p='8px 16px'
-        mt={4}
-        mb={4}
-        borderRadius="20px"
-        _hover={{ backgroundColor: 'orange.200' }}
-        onClick={(e) => changeProduct()}
-        cursor='pointer'
+      <Button
+        onClick={() => onClick(title)}
+        variant={categoryBgState === title ? "solid" : "outline"}
+        colorScheme='teal'
+        leftIcon={<IconCategory image={image} title={title} />}
+        w='120px'
+        p={['5px 0', '5px 4px', '5px 8px']}
+        m='5px 5px 0 5px'
+        fontSize={['sm', 'md']}
       >
-        <Image
-          w={["30px", "40px", "50px"]}
-          minW="30px"
-          src={image}
-          alt="All menu"
-        />
-        <Text fontWeight="bold">{title}</Text>
-      </HStack>
+        {title}
+      </Button>
     </>
   );
 };

@@ -3,7 +3,7 @@ import { GetStaticProps } from "next";
 import { Product } from "../../../products/typesProduct";
 import { Category } from "../../../products/typesCategory";
 import api from "../../../products/api";
-import { Stack } from "@chakra-ui/react";
+import { Button, Stack } from "@chakra-ui/react";
 import NavCategories from "../../../components/NavCategories";
 import Header from "../../../components/Header";
 import ItemProduct from "../../../components/ItemProduct";
@@ -16,58 +16,29 @@ import ItemCart from "../../../components/ItemCart";
 import { ItemCartTypes } from "../../../products/typesItemCart";
 import ProductModal from "../../../components/ProductModal";
 import ExpandImage from "../../../components/ExpandImage";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import Search from "../../../components/Search";
+import { useFoodTruck } from "../../../components/useFoodTruck";
+import { useRouter } from "next/router";
 
 interface Props {
   products: Product[];
 }
-
-const parseCurrency = (value: number): string => {
-  return value.toLocaleString("es-UY", {
-    style: "currency",
-    currency: "UYU",
-  });
-};
 const IndexRoute: React.FC<Props> = ({ products }) => {
-  const router = useRouter();
-  const { username, address } = router.query;
-
-  const [cart, setCart] = React.useState<ItemCartTypes[]>([]);
-  const [selectedImage, setSelectedImage] = React.useState<Product["image"]>("");
-  const [productsSelected, setProductsSelected] = React.useState<Product[]>(products);
+  const [productsSelected, setProductsSelected] =
+    React.useState<Product[]>(products);
   const [searchedValue, setSearchedValue] = React.useState<string>("");
-  const [inputAddressEditedValue, setInputAddressEditedValue] = React.useState<any>(address);
-  let searchedProducts: Product[] = [];
-  const deliveryFee = 40;
+  let searchedProducts: Product[];
 
-  const [userAddress, setUserAddress] = React.useState<any>(address);
-
-  const [numItems, setNumItems] = React.useState<number>(10);
-  const viewMore = () => {
-    setNumItems(numItems + 10);
-  };
-
-  const subTotal = cart.reduce((total: number, e: ItemCartTypes) => total + e.total, 0)
-
-  const text = React.useMemo(() => {
-    return cart
-      .reduce(
-        (message, product) =>
-          message.concat(
-            `* ${product.title} - ${parseCurrency(product.price)}\n`
-          ),
-        ""
-      )
-      .concat(
-        `\nTotal: ${parseCurrency(
-          cart.reduce((total, product) => total + product.price, 0)
-        )}
-        \nDireccion: ${userAddress}
-        `
-      );
-  }, [cart, userAddress]);
+  if (!searchedValue) {
+    searchedProducts = productsSelected;
+  } else {
+    searchedProducts = productsSelected.filter((e) => {
+      const title = e.title.toLowerCase();
+      const value = searchedValue.toLowerCase();
+      return title.includes(value);
+    });
+  }
 
   const changeProduct = (category: Category["title"]) => {
     if (category === "All") {
@@ -83,43 +54,46 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
     }
   };
 
-  const handleAddToCart = (product: Product, count?: number) => {
-    const newItem = {
-      ...product,
-      id: (Math.random() * 1000).toString(),
-      count: count || 1,
-      total: (count || 1) * product.price,
-    };
-    setCart((cart: any) => cart.concat(newItem));
-  };
-
-  const onDelete = (id: ItemCartTypes["id"]) => {
-    setCart((cart) => cart.filter((e) => e.id !== id));
-  };
-
-  // if (!searchedValue.length >= 1) {
-  //   searchedProducts = productsSelected;
-  // } else {
-  //   return
-  // }
-
+  const router = useRouter();
+  const {
+    cart,
+    selectedImage,
+    setSelectedImage,
+    inputAddressEditedValue,
+    setInputAddressEditedValue,
+    deliveryFee,
+    viewMore,
+    subTotal,
+    totalItemsCart,
+    text,
+    handleAddToCart,
+    onDelete,
+    username,
+    address,
+    parseCurrency,
+    numItems,
+    setStoredValue,
+    categoryBgState,
+    setCategoryBgState,
+  } = useFoodTruck();
   return (
     <Stack>
       <Head>
         <title>Food Truck</title>
       </Head>
       <Header
-        address={userAddress || address}
+        address={address}
         username={username}
-        inputAddressEditedValue={inputAddressEditedValue || address}
+        inputAddressEditedValue={inputAddressEditedValue}
         setInputAddressEditedValue={setInputAddressEditedValue}
-        setUserAddress={setUserAddress}
+        setStoredValue={setStoredValue}
       >
         <ModalCart
           cart={cart}
           parseCurrency={parseCurrency}
           deliveryFee={deliveryFee}
           subTotal={subTotal}
+          totalItems={totalItemsCart}
           render={(item: ItemCartTypes) => (
             <ItemCart
               key={item.id}
@@ -134,16 +108,16 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
           {Boolean(cart.length) && (
             <SendButton
               text={text}
-              totalItems={cart.reduce(
-                (total: number, e: ItemCartTypes) => total + e.count,
-                0
-              )}
+              totalItems={totalItemsCart}
               totalPrice={parseCurrency(subTotal + deliveryFee)}
             />
           )}
         </ModalCart>
       </Header>
-      <Search value={searchedValue} setValue={setSearchedValue} />
+      <Search
+        searchedValue={searchedValue}
+        setSearchedValue={setSearchedValue}
+      />
       <NavCategories
         CATEGORIES={CATEGORIES}
         render={(cat: Category) => (
@@ -152,11 +126,13 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
             changeProduct={() => changeProduct(cat.title)}
             title={cat.title}
             image={cat.image}
+            categoryBgState={categoryBgState}
+            setCategoryBgState={setCategoryBgState}
           />
         )}
       />
       <ListProduct
-        productsSelected={productsSelected}
+        searchedProducts={searchedProducts}
         numItems={numItems}
         render={(product: Product) => (
           <ItemProduct
@@ -181,14 +157,11 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
         {Boolean(cart.length) && (
           <SendButton
             text={text}
-            totalItems={cart.reduce(
-              (total: number, e: ItemCartTypes) => total + e.count,
-              0
-            )}
+            totalItems={totalItemsCart}
             totalPrice={parseCurrency(subTotal + deliveryFee)}
           />
         )}
-        <button onClick={viewMore}>view More</button>
+        <Button onClick={viewMore}>View more</Button>
       </ListProduct>
       {selectedImage && (
         <ExpandImage
@@ -210,5 +183,4 @@ export const getStaticProps: GetStaticProps = async () => {
     revalidate: 10,
   };
 };
-
 export default IndexRoute;
