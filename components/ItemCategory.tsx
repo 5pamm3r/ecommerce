@@ -23,20 +23,17 @@ const ItemCategory: React.FC<Props> = ({
     changeProduct();
   };
   return (
-    <>
-      <Button
-        onClick={() => onClick(title)}
-        variant={categoryBgState === title ? "solid" : "outline"}
-        colorScheme='teal'
-        leftIcon={<IconCategory image={image} title={title} />}
-        w='120px'
-        p={['5px 0', '5px 4px', '5px 8px']}
-        m='5px 5px 0 5px'
-        fontSize={['sm', 'md']}
-      >
-        {title}
-      </Button>
-    </>
+    <Button
+      w={['120px', '120px', '130px', '140px']}
+      margin='8px 5px 0 5px !important'
+      fontSize={['sm', 'md', 'lg']}
+      colorScheme='teal'
+      leftIcon={<IconCategory image={image} title={title} />}
+      variant={categoryBgState === title ? "solid" : "outline"}
+      onClick={() => onClick(title)}
+    >
+      {title}
+    </Button>
   );
 };
 
