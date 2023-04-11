@@ -16,9 +16,10 @@ const NavCategories: React.FC<Props> = ({ CATEGORIES, render }) => {
     <Stack
       overflowX={["scroll", "auto"]}
       whiteSpace={"nowrap"}
-      display={["block", "flex"]}
+      display={["inline-block", "flex"]}
       flexDir="row"
       justify='space-between'
+      pb={2}
     >
       {CATEGORIES.map(render)}
     </Stack>

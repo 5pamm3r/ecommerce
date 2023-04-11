@@ -66,10 +66,10 @@ const Header: React.FC<Props> = ({
         </HStack>
       </Grid>
       <VStack align="flex-start" color='whiteAlpha.800' mb='60px' alignItems='center'>
-        <Heading as="h2" size='md' fontFamily='cursive'>
+        <Heading as="h2" size='md' fontFamily='cursive' translate="no">
           What would you
         </Heading>
-        <Heading as="h2" size="md" fontFamily='cursive'>
+        <Heading as="h2" size="md" fontFamily='cursive' translate='no'>
           <Highlight query="to eat ?" styles={{ color: "orange.400" }}>
             like to eat ?
           </Highlight>

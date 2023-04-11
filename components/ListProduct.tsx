@@ -11,7 +11,7 @@ interface Props {
 
 const ListProduct: React.FC<Props> = ({ searchedProducts, render, children, numItems }) => {
   return (
-    <Stack spacing={6} pt={1}>
+    <Stack spacing={4} pt={1}>
       <Grid
         gridGap={2}
         templateColumns={{ sm: '1fr', md: 'repeat(3,1fr)', lg: 'repeat(4,1fr)', xl: 'repeat(5,1fr)', '2xl': 'repeat(5,1fr)' }}

@@ -19,7 +19,6 @@ import ExpandImage from "../../../components/ExpandImage";
 import Head from "next/head";
 import Search from "../../../components/Search";
 import { useFoodTruck } from "../../../components/useFoodTruck";
-import { useRouter } from "next/router";
 
 interface Props {
   products: Product[];
@@ -53,8 +52,6 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
       setProductsSelected(newArr);
     }
   };
-
-  const router = useRouter();
   const {
     cart,
     selectedImage,
@@ -161,7 +158,7 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
             totalPrice={parseCurrency(subTotal + deliveryFee)}
           />
         )}
-        <Button onClick={viewMore}>View more</Button>
+        <Button mt={2} onClick={viewMore}>View more</Button>
       </ListProduct>
       {selectedImage && (
         <ExpandImage
