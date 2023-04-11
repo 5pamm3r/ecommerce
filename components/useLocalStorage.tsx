@@ -3,7 +3,7 @@ import React from 'react'
 const useLocalStorage = (key: string, initialValue: any) => {
   const [storedValue, setStoredValue] = React.useState(() => {
     try {
-      const item = window.localStorage.getItem(key)
+      const item = localStorage.getItem(key)
       return item ? JSON.parse(item) : initialValue
     } catch (error) {
       console.error(error)
@@ -12,7 +12,7 @@ const useLocalStorage = (key: string, initialValue: any) => {
   const setValue = (value: any) => {
     try {
       setStoredValue(value)
-      window.localStorage.setItem(key, JSON.stringify(value))
+      localStorage.setItem(key, JSON.stringify(value))
     } catch (error) {
       console.error(error)
     }
