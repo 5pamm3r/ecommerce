@@ -1,4 +1,4 @@
-import { Image } from '@chakra-ui/react'
+import { Box, Image } from '@chakra-ui/react'
 import React from 'react'
 
 interface Props {
@@ -8,9 +8,9 @@ interface Props {
 
 const IconCategory: React.FC<Props> = ({ image, title }) => {
   return (
-    <>
-      <Image src={image} w={['30px', '40px', '50px']} alt={title} />
-    </>
+    <Box w={['30px', '30px', '40px']}>
+      <Image src={image} w='100%' objectFit='contain' alt={title} />
+    </Box>
   )
 }
 
