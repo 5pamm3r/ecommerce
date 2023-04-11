@@ -84,7 +84,7 @@ const ItemProduct: React.FC<Props> = ({
           {product.title}
         </Text>
         <HStack w="100%" justify="space-between">
-          <Stack>
+          <Stack align='flex-start'>
             <Text fontWeight={500} color="#236441">
               {price}
             </Text>
