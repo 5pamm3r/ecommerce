@@ -9,6 +9,7 @@ interface Props {
 }
 
 const SendButton: React.FC<Props> = ({ text, totalPrice, totalItems }) => {
+  console.log(`enviando:  ${text}`)
   return (
     <AnimatePresence>
       <Box

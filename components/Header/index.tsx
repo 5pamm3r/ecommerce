@@ -15,33 +15,37 @@ import FormEditAddress from "./FormEditAddress";
 import PopoverAddress from "./PopoverAddress";
 import TextInput from "./TextInput";
 import backgroundImg from '../../src/assets/image/background.jpg'
+import { useLocalStorage } from "../useLocalStorage";
+import { User } from "../../products/typeUser";
 
 interface Props {
   children: React.ReactNode;
-  address: any;
-  username: any;
-  inputAddressEditedValue: any;
-  setInputAddressEditedValue: (value: string) => void;
-  setStoredValue: any,
+  address: User['address'];
+  username: User['name'];
 }
 
 const Header: React.FC<Props> = ({
   children,
   address,
-  username,
-  inputAddressEditedValue,
-  setInputAddressEditedValue,
-  setStoredValue,
 }) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const firstFieldRef = React.useRef(null);
+  const [localUser, setLocalUser] = useLocalStorage('Food-Truck-V1', [])
+  const [inputAddressEditedValue, setInputAddressEditedValue] =
+    React.useState<string>('');
+  React.useEffect(() => {
+
+    setInputAddressEditedValue(localUser.address)
+
+  }, [])
+
   return (
     <Box backgroundImage={backgroundImg.src} backgroundSize='cover' backgroundPosition='bottom' p='8px 16px'>
       <Grid gridTemplateColumns='1fr auto 1fr' mb={2} alignItems='center'>
         {children}
         <HStack>
           <Icon as={BiMap} color='whiteAlpha.800' />
-          <Text color='whiteAlpha.800' noOfLines={1} maxW={['100px', '200px', 'fit-content']} >{address}</Text>
+          <Text color='whiteAlpha.800' noOfLines={1} maxW={['100px', '200px', 'fit-content']} >{inputAddressEditedValue}</Text>
           <PopoverAddress
             onOpen={onOpen}
             onClose={onClose}
@@ -51,7 +55,8 @@ const Header: React.FC<Props> = ({
             <FormEditAddress
               onCancel={onClose}
               inputAddressEditedValue={inputAddressEditedValue}
-              setStoredValue={setStoredValue}
+              setLocalUser={setLocalUser}
+              localUser={localUser}
             >
               <TextInput
                 label="Edit address"

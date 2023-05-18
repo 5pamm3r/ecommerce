@@ -1,12 +1,13 @@
 import React from 'react'
 import { FormControl, FormLabel, Input, InputProps, Text } from '@chakra-ui/react'
+import { User } from '../../products/typeUser';
 
 interface TextInputProps extends InputProps {
   id: string;
   label: string;
   inputAddressEditedValue: string
   setInputAddressEditedValue: (value: string) => void
-  address: string;
+  address: User['address'];
 }
 
 

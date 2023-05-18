@@ -19,15 +19,27 @@ import ExpandImage from "../../../components/ExpandImage";
 import Head from "next/head";
 import Search from "../../../components/Search";
 import { useFoodTruck } from "../../../components/useFoodTruck";
+import ViewMore from "../../../components/ViewMore";
+import { useLocalStorage } from "../../../components/useLocalStorage";
+import { User } from "../../../products/typeUser";
 
 interface Props {
   products: Product[];
 }
 const IndexRoute: React.FC<Props> = ({ products }) => {
+  const [localUser, setLocalUser] = useLocalStorage('Food-Truck-V1', { name: '', address: '' });
+  const [name, setName] = React.useState<User['name']>('');
+  const [address, setAddress] = React.useState<User['address']>('');
   const [productsSelected, setProductsSelected] =
     React.useState<Product[]>(products);
   const [searchedValue, setSearchedValue] = React.useState<string>("");
   let searchedProducts: Product[];
+
+  React.useEffect(() => {
+    setName(localUser.name);
+    setAddress(localUser.address);
+    console.log('big')
+  }, [localUser])
 
   if (!searchedValue) {
     searchedProducts = productsSelected;
@@ -56,20 +68,15 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
     cart,
     selectedImage,
     setSelectedImage,
-    inputAddressEditedValue,
-    setInputAddressEditedValue,
     deliveryFee,
-    viewMore,
     subTotal,
     totalItemsCart,
     text,
     handleAddToCart,
     onDelete,
-    username,
-    address,
     parseCurrency,
     numItems,
-    setStoredValue,
+    setNumItems,
     categoryBgState,
     setCategoryBgState,
   } = useFoodTruck();
@@ -80,10 +87,7 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
       </Head>
       <Header
         address={address}
-        username={username}
-        inputAddressEditedValue={inputAddressEditedValue}
-        setInputAddressEditedValue={setInputAddressEditedValue}
-        setStoredValue={setStoredValue}
+        username={name}
       >
         <ModalCart
           cart={cart}
@@ -158,7 +162,7 @@ const IndexRoute: React.FC<Props> = ({ products }) => {
             totalPrice={parseCurrency(subTotal + deliveryFee)}
           />
         )}
-        <Button mt={2} onClick={viewMore}>View more</Button>
+        <ViewMore numItems={numItems} setNumItems={setNumItems} />
       </ListProduct>
       {selectedImage && (
         <ExpandImage

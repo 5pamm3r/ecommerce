@@ -15,23 +15,42 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { BiUser, BiMapPin } from "react-icons/bi";
 import { useFoodTruck } from "../../components/useFoodTruck";
+import { useLocalStorage } from "../../components/useLocalStorage";
+import { User } from "../../products/typeUser";
 
 interface Props { }
 
 const Login: React.FC<Props> = () => {
+  const [localUser, setLocalUser] = useLocalStorage('Food-Truck-V1', { name: '', address: '' });
   const [error, setError] = React.useState<boolean>(false);
   const router = useRouter();
-  const { username, setUsername, storedValue, setStoredValue } = useFoodTruck();
+  const [name, setName] = React.useState<User['name']>('')
+  const [address, setAddress] = React.useState<User['address']>('');
+
+  React.useEffect(() => {
+    setName(localUser.name)
+    setAddress(localUser.address)
+  }, [])
 
   const onSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!storedValue || !username) {
+    if (!localUser.name || !localUser.address) {
       setError(true);
       return;
     }
     setError(false);
-    router.push(`/main?id=${storedValue}`);
+    router.push('/main');
   };
+  const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value;
+    setName(newName)
+    setLocalUser({ ...localUser, name: newName })
+  }
+  const handleAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newAddress = e.target.value;
+    setAddress(newAddress)
+    setLocalUser({ ...localUser, address: newAddress })
+  }
 
   return (
     <Stack maxW="800px" m="0 auto" backgroundColor="gray.100">
@@ -54,8 +73,8 @@ const Login: React.FC<Props> = () => {
               required
               autoFocus
               backgroundColor="white"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={name}
+              onChange={handleName}
             />
           </InputGroup>
           <FormLabel htmlFor="address" mt={2}>
@@ -70,10 +89,10 @@ const Login: React.FC<Props> = () => {
               type="text"
               id="address"
               placeholder=""
-              value={storedValue}
+              value={address}
               backgroundColor="white"
               required
-              onChange={(e) => setStoredValue(e.target.value)}
+              onChange={handleAddress}
             />
           </InputGroup>
           {!!error && (
