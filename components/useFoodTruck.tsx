@@ -7,7 +7,7 @@ import { useLocalStorage } from "./useLocalStorage";
 
 const useFoodTruck = () => {
   const [textAddress, setTextAddress] = React.useState<User['address']>('');
-  const [localUser, setLocalUser] = useLocalStorage('Food-Truck-V1', []);
+  const [localUser, setLocalUser] = useLocalStorage('Food-Truck-V1', { user: '', address: '' });
 
   const [cart, setCart] = React.useState<ItemCartTypes[]>([]);
   const [selectedImage, setSelectedImage] =

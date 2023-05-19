@@ -30,11 +30,10 @@ const Header: React.FC<Props> = ({
 }) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const firstFieldRef = React.useRef(null);
-  const [localUser, setLocalUser] = useLocalStorage('Food-Truck-V1', [])
+  const [localUser, setLocalUser] = useLocalStorage('Food-Truck-V1', { user: '', address: '' });
   const [inputAddressEditedValue, setInputAddressEditedValue] =
     React.useState<string>('');
   React.useEffect(() => {
-
     setInputAddressEditedValue(localUser.address)
 
   }, [])
